@@ -1,3 +1,4 @@
+//Creates the grid when the "Create grid" button is pressed
 function getInputValue() {
     let inputVal = document.getElementById("myInput").value;
     createGrid(inputVal)
@@ -5,6 +6,7 @@ function getInputValue() {
 
 
 
+//Creates main grid of <dimensions> dimension
 function createGrid(dimensions){
 
     const gridElement = document.getElementById('grid');
@@ -17,7 +19,7 @@ function createGrid(dimensions){
     document.body.appendChild(grid);
 
 
-    
+    //Creates the main grid with all the event listeners
     for (let i = 0; i < dimensions; i++) {
         let line = document.createElement('div');
         line.style.display = 'flex';
@@ -27,18 +29,30 @@ function createGrid(dimensions){
             square.style.height = `${800 / dimensions}px`;
             square.style.width = `${800 / dimensions}px`;
             square.addEventListener('mouseover', ()=> {
+                //Changes the initial color of the tile from gray to another randomly generated color with .10 of opacity
                 if (square.style.backgroundColor == 'gray') {
                     square.style.backgroundColor = undefined;
-                    square.style.backgroundColor = `rgba(${Math.random() * 255},${Math.random() * 255},${Math.random() * 255}, 1)`;
-
-
+                    square.style.backgroundColor = randomRGBA();
+                    square.style.opacity = '0.1';
                 }else{
-                    const currentOpacity = parseFloat(square.style.opacity) || 0;
+
+                    //Change the color of the tile every interaction
+                    const currentOpacity = parseFloat(square.style.opacity);
+                    square.style.backgroundColor = randomRGBA();
+
+                    console.log(currentOpacity)
+                    //Makes the tile .10 more opaque until a roof value of 1 (maximum)
                     square.style.opacity = Math.min(currentOpacity + 0.1, 1);
                 }
             });
             line.appendChild(square);
         }
         grid.appendChild(line);
+    }
+
+    //Creates the random color and with .10/1 of opacity
+    function randomRGBA() {
+        return `rgba(${Math.random() * 255},${Math.random() * 255},${Math.random() * 255}, 1)`;
+
     }
 }
